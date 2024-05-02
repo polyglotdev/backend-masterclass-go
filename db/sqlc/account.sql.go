@@ -140,6 +140,24 @@ func (q *Queries) GetEntry(ctx context.Context, id pgtype.Int8) (Entry, error) {
 	return i, err
 }
 
+const getTransfer = `-- name: GetTransfer :one
+SELECT id, from_account_id, to_account_id, amount, created_at FROM transfers
+WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetTransfer(ctx context.Context, id pgtype.Int8) (Transfer, error) {
+	row := q.db.QueryRow(ctx, getTransfer, id)
+	var i Transfer
+	err := row.Scan(
+		&i.ID,
+		&i.FromAccountID,
+		&i.ToAccountID,
+		&i.Amount,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const listAccounts = `-- name: ListAccounts :many
 SELECT id, owner, balance, currency, created_at FROM accounts
 ORDER BY id
