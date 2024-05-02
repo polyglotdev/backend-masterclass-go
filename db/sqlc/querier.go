@@ -17,6 +17,7 @@ type Querier interface {
 	DeleteAccount(ctx context.Context, id int64) error
 	GetAccount(ctx context.Context, id int64) (Account, error)
 	GetEntry(ctx context.Context, id pgtype.Int8) (Entry, error)
+	GetTransfer(ctx context.Context, id pgtype.Int8) (Transfer, error)
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
 	ListEntries(ctx context.Context, arg ListEntriesParams) ([]Entry, error)
 	UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error)
