@@ -97,3 +97,31 @@ Ways to use SQL in Golang:
   - Automatic code generation after just writing SQL
   - "idiomatic" Go code generation
   - Only supports PostgreSQL
+
+## Golang Context
+
+The context package in Go is used for **carrying deadlines**, **cancellation signals**, and **other request-scoped values across API boundaries and between processes**. It's often used in networked functions where it's necessary to manage timeouts, cancellations, and passing request-scoped data.
+
+```go
+func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (Account, error) {
+	row := q.db.QueryRow(ctx, createAccount, arg.Owner, arg.Balance, arg.Currency)
+	var i Account
+	err := row.Scan(
+		&i.ID,
+		&i.Owner,
+		&i.Balance,
+		&i.Currency,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+```
+
+`context.Context` is being used as the first parameter of the `CreateAccount` function. This allows the function **to handle cancellation signals and to pass along specific request-scoped data**.
+
+Here's a brief explanation of how it's used:
+
+- `ctx context.Context`: This is the context parameter. You can think of it as a bag of data that can be passed along to functions and routines. It can include data like deadlines or cancellation signals that can help long-running functions know when they should stop running.
+- `q.db.QueryRow(ctx, createAccount, arg.Owner, arg.Balance, arg.Currency)`: Here, the context `ctx` is passed to the `QueryRow` function. If a cancellation signal is sent to `ctx`, `QueryRow` will stop executing and return immediately.
+
+> 🧠 Context is often used in functions that call networked services, perform I/O operations, or run for a long duration, as these are situations where you might need to cancel an operation before it finishes.
