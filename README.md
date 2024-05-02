@@ -71,3 +71,29 @@ redis                      Create a Redis container
 help                       Display details on all commands
 init_migration             Create a new migration files
 ```
+
+## Generate CRUD Golang code from SQL
+
+## What is CRUD?
+
+CRUD stands for Create, Read, Update, and Delete. It is a set of operations that are used to create, read, update, and delete data. These operations are commonly used in databases and RESTful APIs.
+
+Ways to use SQL in Golang:
+
+- [database/sql package](https://pkg.go.dev/database/sql)
+  - fast
+  - manual mapping SQL fields to variables
+- [GORM](https://pkg.go.dev/gorm.io/gorm)
+  - Crud functions already implemented
+  - Must learn to write query in GORM
+  - Associations are also GORM specific
+  - Slow on high load
+- [SQLX](https://pkg.go.dev/github.com/jmoiron/sqlx)
+  - Fast
+  - Fields mapping via query text and struct tags
+  - Failure won't occur until runtime
+- [SQLC](https://pkg.go.dev/github.com/zeromicro/go-zero/core/stores/sqlc)
+  - Fast and straight forward
+  - Automatic code generation after just writing SQL
+  - "idiomatic" Go code generation
+  - Only supports PostgreSQL
